@@ -174,9 +174,21 @@ dependencies = [
  "bitcoin",
  "miniscript",
  "secp256k1",
+ "slip132 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "strict_encoding",
+]
+
+[[package]]
+name = "bitcoin_hd"
+version = "0.8.2"
+source = "git+https://github.com/zoedberg/descriptor-wallet?branch=fixes#7d492ee581bf8b6338b13d29237208083d1a7b95"
+dependencies = [
+ "amplify",
+ "bitcoin",
+ "secp256k1",
  "serde",
  "serde_with",
- "slip132",
+ "slip132 0.8.0 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
  "strict_encoding",
 ]
 
@@ -188,9 +200,23 @@ checksum = "83934c2077a420678ec8aa0272c9412bb1ed9a7c592b8021a47b319a4e89faae"
 dependencies = [
  "amplify",
  "bitcoin",
- "bitcoin_hd",
+ "bitcoin_hd 0.8.1",
  "chrono",
- "descriptors",
+ "descriptors 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "miniscript",
+ "strict_encoding",
+]
+
+[[package]]
+name = "bitcoin_onchain"
+version = "0.8.1"
+source = "git+https://github.com/zoedberg/descriptor-wallet?branch=fixes#7d492ee581bf8b6338b13d29237208083d1a7b95"
+dependencies = [
+ "amplify",
+ "bitcoin",
+ "bitcoin_hd 0.8.2",
+ "chrono",
+ "descriptors 0.8.0 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
  "electrum-client",
  "miniscript",
  "serde",
@@ -207,6 +233,20 @@ dependencies = [
  "amplify",
  "bitcoin",
  "miniscript",
+ "secp256k1",
+ "serde",
+ "serde_with",
+ "stability",
+ "strict_encoding",
+]
+
+[[package]]
+name = "bitcoin_scripts"
+version = "0.8.2"
+source = "git+https://github.com/zoedberg/descriptor-wallet?branch=fixes#7d492ee581bf8b6338b13d29237208083d1a7b95"
+dependencies = [
+ "amplify",
+ "bitcoin",
  "secp256k1",
  "serde",
  "serde_with",
@@ -237,10 +277,26 @@ checksum = "a21c38adb69d890aa90c175240e3f5b1784cf6626486e7fd5138e3e6f6168101"
 dependencies = [
  "amplify",
  "bitcoin",
- "bp-dbc",
- "bp-seals",
+ "bp-dbc 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bp-seals 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "commit_verify",
- "psbt",
+ "psbt 0.8.4",
+ "serde",
+ "serde_with",
+ "single_use_seals",
+ "strict_encoding",
+]
+
+[[package]]
+name = "bp-core"
+version = "0.8.0"
+source = "git+https://github.com/zoedberg/bp-core?branch=fixes#d86111b592509ea0e9c5b595cfe2e9c44e5507d6"
+dependencies = [
+ "amplify",
+ "bitcoin",
+ "bp-dbc 0.8.0 (git+https://github.com/zoedberg/bp-core?branch=fixes)",
+ "bp-seals 0.8.0 (git+https://github.com/zoedberg/bp-core?branch=fixes)",
+ "commit_verify",
  "serde",
  "serde_with",
  "single_use_seals",
@@ -255,9 +311,24 @@ checksum = "2b579033858923b066ad644f2628f20472694723e3aad6da1f678c9e9ff029db"
 dependencies = [
  "amplify",
  "bitcoin",
- "bitcoin_scripts",
+ "bitcoin_scripts 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "commit_verify",
- "psbt",
+ "psbt 0.8.4",
+ "secp256k1",
+ "serde",
+ "serde_with",
+ "strict_encoding",
+]
+
+[[package]]
+name = "bp-dbc"
+version = "0.8.0"
+source = "git+https://github.com/zoedberg/bp-core?branch=fixes#d86111b592509ea0e9c5b595cfe2e9c44e5507d6"
+dependencies = [
+ "amplify",
+ "bitcoin",
+ "bitcoin_scripts 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "commit_verify",
  "secp256k1",
  "serde",
  "serde_with",
@@ -272,8 +343,25 @@ checksum = "014b7cddf7739a960b504db916041e7605ee60aa56c885673948c55b634bdc96"
 dependencies = [
  "amplify",
  "bitcoin",
- "bitcoin_onchain",
- "bp-dbc",
+ "bitcoin_onchain 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bp-dbc 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "commit_verify",
+ "lnpbp_bech32",
+ "serde",
+ "serde_with",
+ "single_use_seals",
+ "strict_encoding",
+]
+
+[[package]]
+name = "bp-seals"
+version = "0.8.0"
+source = "git+https://github.com/zoedberg/bp-core?branch=fixes#d86111b592509ea0e9c5b595cfe2e9c44e5507d6"
+dependencies = [
+ "amplify",
+ "bitcoin",
+ "bitcoin_onchain 0.8.1 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
+ "bp-dbc 0.8.0 (git+https://github.com/zoedberg/bp-core?branch=fixes)",
  "commit_verify",
  "lnpbp_bech32",
  "serde",
@@ -452,22 +540,21 @@ dependencies = [
 
 [[package]]
 name = "descriptor-wallet"
-version = "0.8.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50e1760da2b3d0962b4532f0cf0653a7d06c72b51d2408ad4e81f83d4bbc2132"
+version = "0.8.3"
+source = "git+https://github.com/zoedberg/descriptor-wallet?branch=fixes#7d492ee581bf8b6338b13d29237208083d1a7b95"
 dependencies = [
  "amplify",
  "bitcoin",
- "bitcoin_hd",
- "bitcoin_onchain",
- "bitcoin_scripts",
+ "bitcoin_hd 0.8.2",
+ "bitcoin_onchain 0.8.1 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
+ "bitcoin_scripts 0.8.2 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
  "chrono",
- "descriptors",
+ "descriptors 0.8.0 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
  "electrum-client",
- "psbt",
+ "psbt 0.8.5",
  "serde",
  "serde_with",
- "slip132",
+ "slip132 0.8.0 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
  "strict_encoding",
 ]
 
@@ -479,10 +566,23 @@ checksum = "20e398905d9e9aa63d503b96b692c2f1be8cbeebd233e00117b9ff1a0d8e320c"
 dependencies = [
  "amplify",
  "bitcoin",
- "bitcoin_hd",
- "bitcoin_scripts",
+ "bitcoin_hd 0.8.1",
+ "bitcoin_scripts 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "chrono",
  "miniscript",
+ "strict_encoding",
+]
+
+[[package]]
+name = "descriptors"
+version = "0.8.0"
+source = "git+https://github.com/zoedberg/descriptor-wallet?branch=fixes#7d492ee581bf8b6338b13d29237208083d1a7b95"
+dependencies = [
+ "amplify",
+ "bitcoin",
+ "bitcoin_hd 0.8.2",
+ "bitcoin_scripts 0.8.2 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
+ "chrono",
  "serde",
  "serde_with",
  "strict_encoding",
@@ -522,18 +622,20 @@ dependencies = [
 
 [[package]]
 name = "electrum-client"
-version = "0.10.1"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ef9b40020912229e947b45d91f9ff96b10d543e0eddd75ff41b9eda24d9c051"
+checksum = "af53c415260dcb220fa02182669727c730535bfed4edbfde42e1291342af95cd"
 dependencies = [
  "bitcoin",
+ "byteorder",
+ "libc",
  "log",
  "rustls",
  "serde",
  "serde_json",
- "socks",
  "webpki",
  "webpki-roots",
+ "winapi",
 ]
 
 [[package]]
@@ -704,7 +806,7 @@ checksum = "bbfcfa60726746c360fb68ad137ca83baa9670db38e97549454a6da86c8c8c05"
 dependencies = [
  "amplify",
  "bitcoin",
- "bitcoin_scripts",
+ "bitcoin_scripts 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "chrono",
  "lightning_encoding_derive",
  "strict_encoding",
@@ -895,12 +997,27 @@ checksum = "f7ff2cb41f19427dfb60bac4f50a2b3383aaf7ae7016c612e2d8dbd877026bbc"
 dependencies = [
  "amplify",
  "bitcoin",
- "bitcoin_hd",
- "bitcoin_onchain",
- "bitcoin_scripts",
+ "bitcoin_hd 0.8.1",
+ "bitcoin_onchain 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bitcoin_scripts 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "commit_verify",
- "descriptors",
+ "descriptors 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "miniscript",
+ "strict_encoding",
+]
+
+[[package]]
+name = "psbt"
+version = "0.8.5"
+source = "git+https://github.com/zoedberg/descriptor-wallet?branch=fixes#7d492ee581bf8b6338b13d29237208083d1a7b95"
+dependencies = [
+ "amplify",
+ "bitcoin",
+ "bitcoin_hd 0.8.2",
+ "bitcoin_onchain 0.8.1 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
+ "bitcoin_scripts 0.8.2 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
+ "commit_verify",
+ "descriptors 0.8.0 (git+https://github.com/zoedberg/descriptor-wallet?branch=fixes)",
  "serde",
  "serde_with",
  "strict_encoding",
@@ -1117,13 +1234,12 @@ dependencies = [
 [[package]]
 name = "rgb-core"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71a0efaa4a4c85acf6159148d92af402f37821eb197c66018723f605b6cfc0be"
+source = "git+https://github.com/zoedberg/rgb-core?branch=fixes#b32de0ae5f945ce12d15ac753c1e4ffda5f41cba"
 dependencies = [
  "aluvm",
  "amplify",
  "bitcoin",
- "bp-core",
+ "bp-core 0.8.0 (git+https://github.com/zoedberg/bp-core?branch=fixes)",
  "commit_verify",
  "descriptor-wallet",
  "grin_secp256k1zkp",
@@ -1142,7 +1258,7 @@ version = "0.8.0"
 dependencies = [
  "amplify",
  "bitcoin",
- "bp-core",
+ "bp-core 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "clap",
  "commit_verify",
  "descriptor-wallet",
@@ -1337,20 +1453,18 @@ checksum = "1ad2785e1d1eccf40a0763d4bb51badfe2445a57b27e12dc6a9ebc81f017823b"
 dependencies = [
  "amplify",
  "bitcoin",
- "serde",
- "serde_with",
- "strict_encoding",
 ]
 
 [[package]]
-name = "socks"
-version = "0.3.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0c3dbbd9ae980613c6dd8e28a9407b50509d3803b57624d5dfe8315218cd58b"
+name = "slip132"
+version = "0.8.0"
+source = "git+https://github.com/zoedberg/descriptor-wallet?branch=fixes#7d492ee581bf8b6338b13d29237208083d1a7b95"
 dependencies = [
- "byteorder",
- "libc",
- "winapi",
+ "amplify",
+ "bitcoin",
+ "serde",
+ "serde_with",
+ "strict_encoding",
 ]
 
 [[package]]
