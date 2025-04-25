@@ -33,6 +33,7 @@ use indexmap::IndexMap;
 use invoice::{AddressPayload, UnknownNetwork};
 use percent_encoding::{utf8_percent_encode, AsciiSet, CONTROLS};
 use rgb::{ChainNet, ContractId, SchemaId, SecretSeal};
+use strict_types::FieldName;
 
 use crate::invoice::{Beneficiary, InvoiceState, Pay2Vout, RgbInvoice, RgbTransport, XChainNet};
 
@@ -379,14 +380,25 @@ impl FromStr for RgbInvoice {
             Err(_) => return Err(InvoiceParseError::InvalidSchemaId(schema_str.to_string())),
         };
 
-        let Some(assignment) = path.next() else {
-            return Err(InvoiceParseError::AssignmentMissed);
+        let (assignment_name, assignment) = match (path.next(), path.next()) {
+            (None, _) => return Err(InvoiceParseError::AssignmentMissed),
+            (Some(first), Some(second)) => {
+                let name = FieldName::try_from(first.as_str().to_owned())
+                    .map_err(|e| InvoiceParseError::InvalidQueryParam(e.to_string()))?;
+                (Some(name), second.as_str().to_owned())
+            }
+            (Some(first), None) => (None, first.as_str().to_owned()),
         };
+
+        // Check no extra path segments remain
+        if path.next().is_some() {
+            return Err(InvoiceParseError::Invalid);
+        }
+
         let (amount, beneficiary) = assignment
-            .as_str()
             .split_once('+')
             .map(|(a, b)| (Some(a), b))
-            .unwrap_or((None, assignment.as_str()));
+            .unwrap_or((None, &assignment));
         let (value, beneficiary_str) = match (amount, beneficiary) {
             (Some(a), b) => (
                 InvoiceState::from_str(a).map_err(|_| InvoiceParseError::Data(a.to_string()))?,
@@ -424,7 +436,7 @@ impl FromStr for RgbInvoice {
             transports,
             contract,
             schema,
-            assignment_name: None,
+            assignment_name,
             beneficiary,
             assignment_state: value,
             expiry,
@@ -831,5 +843,42 @@ mod test {
             .unwrap(),
         ));
         assert_eq!(Pay2Vout::from_str(&p.to_string()).unwrap(), p);
+    }
+
+    #[test]
+    fn parse_with_assignment_name() {
+        let original_invoice = RgbInvoice {
+            transports: vec![RgbTransport::UnspecifiedMeans],
+            contract: ContractId::from_str("11Fa!$Dk-rUWXhy8-7H35qXm-pLGGLOo-txBWUgj-tbOaSbI").ok(),
+            schema: SchemaId::from_str("Il7xqc$4yuca6X0oy0kN27e13ieIAxAv43uVfpG$gYE").ok(),
+            assignment_name: Some("owner".into()),
+            beneficiary: XChainNet::with(
+                ChainNet::BitcoinMainnet,
+                Beneficiary::BlindedSeal(
+                    SecretSeal::from_str("zlVS28Rb-amM5lih-ONXGACC-IUWD0Y$-0JXcnWZ-MQn8VEI-B39!F")
+                        .unwrap(),
+                ),
+            ),
+            assignment_state: InvoiceState::Amount(Amount::from(100u64)), // Example amount
+            expiry: None,
+            unknown_query: IndexMap::new(),
+        };
+
+        let invoice_str = original_invoice.to_string();
+
+        assert!(invoice_str.contains("/owner/"));
+        let expected_str_fragment = "Il7xqc$4yuca6X0oy0kN27e13ieIAxAv43uVfpG$gYE/owner/BF+bc:\
+                                     utxob:zlVS28Rb-amM5lih-ONXGACC-IUWD0Y$-0JXcnWZ-MQn8VEI-B39!F";
+        assert!(invoice_str.contains(expected_str_fragment));
+
+        let deserialized_invoice =
+            RgbInvoice::from_str(&invoice_str).expect("Failed to deserialize invoice string");
+
+        assert_eq!(deserialized_invoice.assignment_name, original_invoice.assignment_name,);
+
+        assert_eq!(deserialized_invoice.contract, original_invoice.contract,);
+        assert_eq!(deserialized_invoice.schema, original_invoice.schema,);
+        assert_eq!(deserialized_invoice.beneficiary, original_invoice.beneficiary,);
+        assert_eq!(deserialized_invoice.assignment_state, original_invoice.assignment_state,);
     }
 }
